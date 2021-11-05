@@ -1,0 +1,23 @@
+* {
+    font-family: 'Ubuntu', sans-serif;
+    color: white !important;
+}
+
+body {
+    background-color: whitesmoke;
+}
+
+.navbar {
+    background-color: #222f3e;
+}
+
+.nav-link-btn {
+    background-color: #5f27cd;
+    border: 3px solid #5f27cd;
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+.nav-link-btn:hover {
+    background-color: #341f97;
+}
