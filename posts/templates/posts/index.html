@@ -61,6 +61,25 @@
             </div>
         </div>
     </nav>
+
+    <div class="container-fluid all-categories p-0 m-0">
+        <div class="row category-section p-0 m-3">
+            <div class="row category-name-row ps-2 ms-0 mt-0 me-2 mb-0">
+                <div class="col-auto p-0">
+                    <a class="category-name text-decoration-none fw-bold fs-6 text-uppercase">{{categories.0.title}}</a>
+                </div>
+            </div>
+            <div class="row post-info-row border border-dark ms-0 mt-1 me-2 mb-1">
+                <div class="col-auto post-info p-0">
+                    {% for post in posts %}
+                    <a class="post-title fw-bold text-decoration-none" href="#">{{post.title}}</a>
+                    <p class="post-start fst-italic">{{post.snippet}}</p>
+                    <a class="post-extra-info fst-italic text-decoration-none">{{post.user}}, {{post.date}}</a> {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>

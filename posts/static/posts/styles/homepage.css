@@ -21,3 +21,24 @@ body {
 .nav-link-btn:hover {
     background-color: #341f97;
 }
+
+.category-section {
+    background-color: #c8d6e5;
+}
+
+.category-name-row {
+    background-color: #576574;
+}
+
+.post-info-row {
+    background-color: #8395a7;
+}
+
+.post-title:hover {
+    color: #5f27cd !important;
+}
+
+.post-extra-info {
+    font-size: smaller;
+    color: lightgray !important;
+}
