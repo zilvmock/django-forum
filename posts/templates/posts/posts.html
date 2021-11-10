@@ -1,4 +1,4 @@
-{% load static %}
+{% load static %} {% load hitcount_tags %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'bs/css/bootstrap.css' %}" />
 
@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'posts/styles/homepage.css' %}">
-    <title>Homepage</title>
+    <title>Posts</title>
 </head>
 
 <body>
@@ -66,32 +66,43 @@
         <div class="row category-section p-0 m-3">
             <div class="row category-name-row ps-2 ms-0 mt-0 me-2 mb-0">
                 <div class="col-auto p-0">
-                    <p class="category-name text-decoration-none fw-bold fs-6 text-uppercase p-0 m-0">Categories</p>
+                    <p class="category-name text-decoration-none fw-bold fs-6 text-uppercase p-0 m-0">{{category.get_title}}</p>
                 </div>
             </div>
-            {% for category in categories %}
-            <div class="row category-info-row border border-dark ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
-                <div class="col-1 d-flex align-items-center category-icon-col py-1">
-                    <img src="{% static 'media/forum-icon.svg' %}" alt="forum-icon" class="forum-icon">
+            <div class="row post-info-row border border-dark ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
+                {% if posts %}
+                <div class="col-1 d-flex align-items-center post-icon-col py-1">
+                    <img src="{% static 'media/topic-icon.svg' %}" alt="topic-icon" class="topic-icon">
                 </div>
-                <div class="col-auto category-info-col p-0 ps-2">
-                    <a class="category-title fw-bold text-decoration-none m-0 fs-5" href="{% url 'posts' category.slug %}">{{category.title}}</a>
-                    <p class="category-desc">{{category.description}}</p>
-                    <p class="category-posts fst-italic m-0">Posts: {{category.num_posts}}</p>
-                    {% if category.last_post %}
-                    <div class="latest-post">
-                        <small>Latest Post: 
-                            <a href="{{category.last_post.get_url}}" class="last-post-link fw-bold">{{category.last_post.get_title}}</a> by
-                            <a href="{{category.last_post.user.fullname}}" class="last-post-user-link fw-bold">{{category.last_post.user.fullname}}</a>
-                        </small>
+                <div class="col-8 post-info p-0 ps-2">
+                    {% for post in posts %}
+                    <a class="post-title fw-bold text-decoration-none m-0 fs-5" href="{% url 'detail' post.slug %}">{{post.title}}</a>
+                    <p class="post-start fst-italic">{{post.get_snippet|striptags}}</p>
+                    <small>by
+                        <a href="{{post.user.fullname}}" class="last-post-user-link fw-bold">{{category.last_post.user.fullname}}</a>
+                        <p class="post-extra-info fst-italic text-decoration-none m-0">At {{post.date}} <br> Has {% get_hit_count for post %} views | {{post.num_comments}} comments </p>
+                    </small>
+                </div>
+                {% if post.last_reply %}
+                <div class="col post-side-info border-start border-dark ps-1 p-1">
+                    <div class="row">
+                        <div class="col-12">
+                            <p class="text-center m-0 p-0 fw-bold">Latest Reply</p>
+                        </div>
+                        <div class="col-2 m-1">
+                            <img src="{{post.last_reply.user.profile_pic.url}}" alt="user-avatar" class="lr-user-avatar">
+                        </div>
+                        <div class="col-xxl-auto col-xl m-1">
+                            <small><a href="" class="username">{{post.last_reply.user.fullname}}</a><br></small>
+                            <small class="reply-extra-info fst-italic text-decoration-none m-0">At {{post.last_reply.date}}</small>
+                        </div>
                     </div>
-                    {% endif %}
                 </div>
+                {% endif %} {% endfor %} {% else %}
+                <p class="post-start fst-italic text-center">No posts in this category</p>{% endif %}
             </div>
-            {% endfor %}
         </div>
     </div>
-
 </body>
 
 </html>

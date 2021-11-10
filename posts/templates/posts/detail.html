@@ -1,4 +1,4 @@
-{% load static %}
+{% load static %} {% load hitcount_tags %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'bs/css/bootstrap.css' %}" />
 
@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'posts/styles/homepage.css' %}">
-    <title>Homepage</title>
+    <title>Post</title>
 </head>
 
 <body>
@@ -62,35 +62,62 @@
         </div>
     </nav>
 
-    <div class="container-fluid all-categories p-0 m-0">
-        <div class="row category-section p-0 m-3">
-            <div class="row category-name-row ps-2 ms-0 mt-0 me-2 mb-0">
-                <div class="col-auto p-0">
-                    <p class="category-name text-decoration-none fw-bold fs-6 text-uppercase p-0 m-0">Categories</p>
+    <!-- user post -->
+    <div class="container-fluid user-post p-0 m-0">
+        <div class="row post-section p-0 m-3">
+            <div class="row topic-title-row ps-2 ms-0 mt-0 me-2 mb-0">
+                <div class="col p-0">
+                    <p class="topic-name text-decoration-none fw-bold fs-4 text-uppercase p-0 m-0">{{ post.get_title }}</p>
                 </div>
             </div>
-            {% for category in categories %}
-            <div class="row category-info-row border border-dark ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
-                <div class="col-1 d-flex align-items-center category-icon-col py-1">
-                    <img src="{% static 'media/forum-icon.svg' %}" alt="forum-icon" class="forum-icon">
+            <div class="row post-info-row ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
+                <div class="col-1 user-info-col text-center py-1">
+                    <img src="{{post.user.profile_pic.url}}" alt="user-avatar" class="user-avatar">
+                    <a href="" class="username text-decoration-none">{{ post.user.fullname }}</a>
+                    <small class="user-points">Points: {{post.user.points}}</small><br>
+                    <small class="user-posts">Posts: {{post.user.num_posts}}</small>
                 </div>
-                <div class="col-auto category-info-col p-0 ps-2">
-                    <a class="category-title fw-bold text-decoration-none m-0 fs-5" href="{% url 'posts' category.slug %}">{{category.title}}</a>
-                    <p class="category-desc">{{category.description}}</p>
-                    <p class="category-posts fst-italic m-0">Posts: {{category.num_posts}}</p>
-                    {% if category.last_post %}
-                    <div class="latest-post">
-                        <small>Latest Post: 
-                            <a href="{{category.last_post.get_url}}" class="last-post-link fw-bold">{{category.last_post.get_title}}</a> by
-                            <a href="{{category.last_post.user.fullname}}" class="last-post-user-link fw-bold">{{category.last_post.user.fullname}}</a>
-                        </small>
-                    </div>
-                    {% endif %}
+                <div class="col post-info-col p-2">
+                    <p class="post-content">{{ post.content|safe }}</p>
+                    <div class="d-flex align-items-end flex-column hitpoints">Views: {% get_hit_count for post %}</div>
                 </div>
             </div>
-            {% endfor %}
         </div>
     </div>
+
+    <!-- comments -->
+    <h3 class="name text-uppercase ps-3 bg-black">Comments</h3>
+    {% for comment in post.comments.all %}
+    <div class="row comment-section p-0 m-3">
+        <div class="row comment-info-row ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
+            <div class="col-1 user-info-col text-center py-1">
+                <img src="{{post.user.profile_pic.url}}" alt="user-avatar" class="user-avatar">
+                <a href="" class="username text-decoration-none">{{ post.user.fullname }}</a>
+                <small class="user-points">Points: {{comment.user.points}}</small><br>
+                <small class="user-posts">Posts: {{comment.user.num_posts}}</small>
+            </div>
+            <div class="col comment-info-col p-2">
+                <p class="comment-content">{{ comment.content|safe }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- replies -->
+    {% for reply in comment.replies.all %}
+    <div class="row replies-section p-0 m-3 ps-5">
+        <div class="row replies-info-row ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
+            <div class="col-1 user-info-col text-center py-1">
+                <img src="{{post.user.profile_pic.url}}" alt="user-avatar" class="user-avatar">
+                <a href="" class="username text-decoration-none">{{ post.user.fullname }}</a>
+                <small class="user-points">Points: {{reply.user.points}}</small><br>
+                <small class="user-posts">Posts: {{reply.user.num_posts}}</small>
+            </div>
+            <div class="col reply-info-col p-2">
+                <p class="reply-content">{{ reply.content|safe }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %} {% endfor %}
 
 </body>
 

@@ -26,19 +26,59 @@ body {
     background-color: #c8d6e5;
 }
 
-.category-name-row {
+.category-name-row,
+.topic-title-row {
     background-color: #576574;
 }
 
-.post-info-row {
+.category-icon-col,
+.post-icon-col {
+    width: 5em;
+    background-color: #576574;
+}
+
+.user-info-col {
+    width: 10em;
+    background-color: #576574;
+}
+
+.forum-icon,
+.topic-icon {
+    max-height: 50px;
+    max-width: 50px;
+}
+
+.post-info-row,
+.category-info-row,
+.post-info-row,
+.comment-info-row,
+.replies-info-row {
     background-color: #8395a7;
 }
 
-.post-title:hover {
+a:hover {
     color: #5f27cd !important;
 }
 
-.post-extra-info {
+.post-extra-info,
+.reply-extra-info,
+.category-desc,
+.category-posts {
+    font-size: smaller;
+    color: lightgray !important;
+}
+
+.user-avatar {
+    width: 100px;
+    height: 100px;
+}
+
+.lr-user-avatar {
+    width: 50px;
+    height: 50px;
+}
+
+.hitpoints {
     font-size: smaller;
     color: lightgray !important;
 }
