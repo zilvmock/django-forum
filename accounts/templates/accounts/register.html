@@ -1,4 +1,4 @@
-{% load static %} {% load hitcount_tags %}
+{% load static %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'bs/css/bootstrap.css' %}" />
 
@@ -12,8 +12,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'posts/styles/homepage.css' %}">
-    <title>Post</title>
+    <link rel="stylesheet" href="{% static 'accounts/styles/forms.css' %}">
+    <title>Signup</title>
 </head>
 
 <body>
@@ -62,67 +62,31 @@
         </div>
     </nav>
 
-    <!-- user post -->
-    <div class="container-fluid user-post p-0 m-0">
-        <div class="row post-section p-0 m-3">
-            <div class="row topic-title-row ps-2 ms-0 mt-0 me-2 mb-0">
-                <div class="col p-0">
-                    <p class="topic-name text-decoration-none fw-bold fs-4 text-uppercase p-0 m-0">{{ post.get_title }}</p>
-                </div>
-            </div>
-            <div class="row post-info-row ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
-                <div class="col-1 user-info-col text-center py-1">
-                    <img src="{{post.user.profile_pic.url}}" alt="user-avatar" class="user-avatar"><br>
-                    <a href="" class="username text-decoration-none">{{ post.user.fullname }}</a><br>
-                    <small class="user-points">Points: {{post.user.points}}</small><br>
-                    <small class="user-posts">Posts: {{post.user.num_posts}}</small>
-                </div>
-                <div class="col post-info-col p-2 h-75">
-                    <div class="row post-content">
-                        {{ post.content|safe }}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col d-flex justify-content-center pt-5">
+                <form action="." class="register-table p-2 m-0" method="POST">
+                    {% csrf_token %}
+                    <label for="inputUsername" class="form-label pt-3 fw-bold text-uppercase">Username:</label><br> {{form.username}} <br>
+                    <label for="inputPassword" class="form-label pt-3 fw-bold text-uppercase">Password:</label><br> {{form.password1}} <br>
+                    <div id="passwordHelpBlock" class="form-text">
+                        <p class="m-0">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. Password:</p>
+                        <ul>
+                            <li>Your password can’t be too similar to your other personal information.</li>
+                            <li>Your password must contain at least 8 characters.</li>
+                            <li>Your password can’t be a commonly used password.</li>
+                            <li>Your password can’t be entirely numeric.</li>
+                        </ul>
                     </div>
-                    <div class="row">
-                        <p class="text-end align-text-bottom m-0 hitpoints">Views: {% get_hit_count for post %}</p>
+                    <label for="inputPassword" class="form-label fw-bold text-uppercase">Repeat Password:</label><br> {{form.password2}}<br> {% for field in form %}{% for error in field.errors %}
+                    <small class="error-msg pt-3">{{error}}</small> {% endfor %} {% endfor %}
+                    <div class="d-grid gap-2 col-6 mx-auto pt-4">
+                        <input class="btn text-uppercase fw-bold" type="submit" value="Signup">
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
-
-    <!-- comments -->
-    <h3 class="name text-uppercase ps-3 bg-black">Comments</h3>
-    {% for comment in post.comments.all %}
-    <div class="row comment-section p-0 m-3">
-        <div class="row comment-info-row ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
-            <div class="col-1 user-info-col text-center py-1">
-                <img src="{{post.user.profile_pic.url}}" alt="user-avatar" class="user-avatar">
-                <a href="" class="username text-decoration-none">{{ post.user.fullname }}</a>
-                <small class="user-points">Points: {{comment.user.points}}</small><br>
-                <small class="user-posts">Posts: {{comment.user.num_posts}}</small>
-            </div>
-            <div class="col comment-info-col p-2">
-                <p class="comment-content">{{ comment.content|safe }}</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- replies -->
-    {% for reply in comment.replies.all %}
-    <div class="row replies-section p-0 m-3 ps-5">
-        <div class="row replies-info-row ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
-            <div class="col-1 user-info-col text-center py-1">
-                <img src="{{post.user.profile_pic.url}}" alt="user-avatar" class="user-avatar">
-                <a href="" class="username text-decoration-none">{{ post.user.fullname }}</a>
-                <small class="user-points">Points: {{reply.user.points}}</small><br>
-                <small class="user-posts">Posts: {{reply.user.num_posts}}</small>
-            </div>
-            <div class="col reply-info-col p-2">
-                <p class="reply-content">{{ reply.content|safe }}</p>
-            </div>
-        </div>
-    </div>
-    {% endfor %} {% endfor %}
-
 </body>
 
 </html>

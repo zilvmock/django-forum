@@ -30,6 +30,8 @@ INSTALLED_APPS = [
     'tinymce',
     'taggit',
     'posts',
+    'accounts',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -125,3 +127,4 @@ MEDIA_ROOT  = BASE_DIR / 'static' / 'media'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_TEMPLATE_PACK = 'bootstrap4'

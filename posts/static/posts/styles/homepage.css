@@ -20,6 +20,11 @@ body {
 
 .nav-link-btn:hover {
     background-color: #341f97;
+    color: white !important;
+}
+
+.dropdown-menu {
+    background-color: #576574 !important;
 }
 
 .category-section {
@@ -76,6 +81,10 @@ a:hover {
 .lr-user-avatar {
     width: 50px;
     height: 50px;
+}
+
+.post-content {
+    height: 100%;
 }
 
 .hitpoints {

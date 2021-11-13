@@ -13,11 +13,11 @@ User = get_user_model()
 
 class Author(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    fullname = models.CharField(max_length=40, blank=True)
-    slug = slug = models.SlugField(max_length=400, unique=True, blank=True)
-    bio = HTMLField()
+    fullname = models.CharField(max_length=40, blank=False)
+    slug = models.SlugField(max_length=400, unique=True, blank=True)
+    bio = HTMLField(blank=True)
     points = models.IntegerField(default=0)
-    profile_pic = ResizedImageField(size=[100, 100], quality=100, upload_to='user_avatars', default=None, null=True, blank=True)
+    profile_pic = ResizedImageField(size=[100, 100], quality=100, upload_to='user_avatars', default='user_avatars/happy_tux.jpg', null=True, blank=True)
 
     def __str__(self):
         return self.fullname
