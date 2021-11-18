@@ -1,6 +1,6 @@
 * {
     font-family: 'Ubuntu', sans-serif;
-    color: white !important;
+    color: white;
 }
 
 body {
@@ -11,21 +11,28 @@ body {
     background-color: #222f3e;
 }
 
-.nav-link-btn {
+.btn {
     background-color: #5f27cd;
-    border: 3px solid #5f27cd;
     border-radius: 5px;
-    transition: 0.2s;
+    color: white;
 }
 
-.nav-link-btn:hover {
+.btn:hover {
     background-color: #341f97;
     color: white !important;
+}
+
+.anl,
+.link-btn {
+    font-weight: bold;
 }
 
 .dropdown-menu {
     background-color: #576574 !important;
 }
+
+
+/* CONTENT */
 
 .category-section {
     background-color: #c8d6e5;
@@ -57,12 +64,61 @@ body {
 .category-info-row,
 .post-info-row,
 .comment-info-row,
-.replies-info-row {
+.replies-info-row,
+.new-post-section {
     background-color: #8395a7;
+}
+
+.create-post p,
+.create-post h1,
+.update-post p,
+.update-post h1 {
+    color: white !important;
+}
+
+.create-post input,
+.create-post textarea,
+.create-post select,
+.create-post option,
+.update-post input,
+.update-post textarea,
+.update-post select,
+.update-post option {
+    width: 100%;
+    color: black !important;
+}
+
+.btn-div input {
+    color: white !important;
+}
+
+.post-comment-div textarea,
+.post-comment-div label,
+.post-reply-div textarea,
+.post-reply-div label {
+    color: black !important;
+}
+
+a {
+    color: white !important;
 }
 
 a:hover {
     color: #5f27cd !important;
+}
+
+.comment-info-col {
+    z-index: 0 !important;
+}
+
+.comment-content {
+    position: absolute;
+    z-index: -1 !important;
+}
+
+.reply-div {
+    display: block;
+    z-index: 100 !important;
 }
 
 .post-extra-info,
@@ -90,4 +146,13 @@ a:hover {
 .hitpoints {
     font-size: smaller;
     color: lightgray !important;
+}
+
+.paginator {
+    background-color: #576574;
+}
+
+.paginator b,
+.paginator a {
+    color: black !important;
 }

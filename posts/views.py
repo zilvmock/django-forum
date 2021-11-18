@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.shortcuts import render, get_object_or_404
 from .models import Author, Category, Post
 from .utils import update_views
+from django.utils.text import slugify
 
 from django.shortcuts import redirect, render, get_object_or_404
 from .models import Author, Category, Post, Comment, Reply
@@ -9,6 +10,9 @@ from .utils import update_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from .forms import PostForm, UpdateForm
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 
 def home(request):
@@ -35,25 +39,24 @@ def home(request):
 
 def detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
-    if request.user.is_authenticated:
-        author = Author.objects.get(user=request.user)
     
-    if "comment-form" in request.POST:
-        comment = request.POST.get("comment")
-        new_comment, created = Comment.objects.get_or_create(user=author, content=comment)
+    if "post-a-comment" in request.POST:
+        author = Author.objects.get(user=request.user)
+        comment = request.POST["comment-content"]
+        new_comment = Comment.objects.create(user=author, content=comment)
         post.comments.add(new_comment.id)
 
-    if "reply-form" in request.POST:
-        reply = request.POST.get("reply")
-        commenr_id = request.POST.get("comment-id")
-        comment_obj = Comment.objects.get(id=commenr_id)
-        new_reply, created = Reply.objects.get_or_create(user=author, content=reply)
+    if "post-a-reply" in request.POST:
+        author = Author.objects.get(user=request.user)
+        reply = request.POST["reply-content"]
+        comment_id = request.POST["comment-id"]
+        comment_obj = Comment.objects.get(id=comment_id)
+        new_reply = Reply.objects.create(user=author, content=reply)
         comment_obj.replies.add(new_reply.id)
 
 
     context = {
-        "post":post,
-        "title": "OZONE: "+post.title,
+        "post": post,
     }
     update_views(request, post)
 
@@ -61,9 +64,10 @@ def detail(request, slug):
 
 def posts(request, slug):
     category = get_object_or_404(Category, slug=slug)
-    posts = Post.objects.filter(approved=True, categories=category)
+    posts = Post.objects.filter(categories=category)
     paginator = Paginator(posts, 5)
     page = request.GET.get("page")
+    # page = request.GET['page']
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
@@ -74,40 +78,70 @@ def posts(request, slug):
     context = {
         "posts":posts,
         "category": category,
-        "title": "OZONE: Posts"
     }
 
     return render(request, './posts/posts.html', context)
 
 
+@login_required
+def create_post(request):
+    context = {}
+    form = PostForm(request.POST)
+    if request.method == "POST":
+        if form.is_valid():
+            # print("\n\n its valid")
+            author = Author.objects.get(user=request.user)
+            new_post = form.save(commit=False)
+            new_post.user = author
+            new_post.slug = slugify(request.user.username + "-" + new_post.title)
+            # new_post.categories.set(request.POST.get('categories'))
+            # categories = request.POST['categories']
+            # for cat in categories:
+            #     new_post.categories.set(cat)
+            new_post.save()
+            form.save_m2m()
+            return redirect("home")
+    context.update({
+        "form": form,
+    })
+    return render(request, "./posts/create_post.html", context)
 
-# def create_post(request):
-#     context = {}
-#     # form = PostForm(request.POST or None)
-#     if request.method == "POST":
-#         if form.is_valid():
-#             print("\n\n its valid")
-#             author = Author.objects.get(user=request.user)
-#             new_post = form.save(commit=False)
-#             new_post.user = author
-#             new_post.save()
-#             form.save_m2m()
-#             return redirect("home")
-#     context.update({
-#         "form": form,
-#         "title": "OZONE: Create New Post"
-#     })
-#     return render(request, "create_post.html", context)
+@login_required
+def edit_post(request, slug):
+    context = {}
+    user = request.user
+    post = get_object_or_404(Post, slug=slug)
 
-def latest_posts(request):
-    posts = Post.objects.all().filter(approved=True)[:10]
-    context = {
-        "posts":posts,
-        "title": "OZONE: Latest 10 Posts"
-    }
+    if request.method == "POST":
+        form = UpdateForm(request.POST, instance=post)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            # obj.author = post.user
+            obj.slug = slugify(post.user.user.username + "-" + obj.title)
+            obj.save()
+            # form.save_m2m()
+            # post = obj
+            return redirect("home")
+    
+    form = UpdateForm(initial = {
+        'title': post.title,
+        'content': post.content,
+        'tags': post.tags.all(),
+    })
 
-    return render(request, "latest-posts.html", context)
+    context.update({
+        "form": form,
+    })
+
+    return render(request, './posts/update_post.html', context)
+
+@login_required
+def delete_post(request, slug):
+    return HttpResponse("DEL PAGAVO")
+#     # context = {}
+#     post = get_object_or_404(Post, slug=slug)
+#     post.delete()
+#     return redirect("home")
 
 def search_result(request):
-
-    return render(request, "search.html")
+    return render(request, "./posts/search.html")

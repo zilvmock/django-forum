@@ -67,7 +67,7 @@
         <div class="row">
             <div class="col d-flex justify-content-center pt-5">
                 {% if not is_author %}
-                <form action="." class="profile-table p-2 m-0" method="POST">
+                <form action="." class="profile-table p-2 m-0" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="title text-center">
                         <h3>Hey <b>{{user}}</b>, before continuing please fill in the following information</h3>
@@ -77,7 +77,7 @@
                     <label for="inputPassword" class="form-label pt-3 fw-bold text-uppercase m-0">Bio: </label><br><small class="fst-italic"> Optional</small><br> {{form.bio}} <br>
                     <label for="inputPassword" class="form-label pt-3 fw-bold text-uppercase">Profile Image:</label><br>{{form.profile_pic}}
                     <div class="d-grid gap-2 col-6 mx-auto pt-4">
-                        <input class="btn text-uppercase fw-bold" type="submit" value="Update">
+                        <input class="btn text-uppercase fw-bold" type="submit" value="Finish Registering">
                     </div>
                 </form>
                 {% endif %}

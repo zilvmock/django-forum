@@ -67,7 +67,7 @@ class Category(models.Model):
 
 class Reply(models.Model):
     user = models.ForeignKey(Author, on_delete=models.CASCADE)
-    content = models.TextField()
+    content = HTMLField()
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -79,7 +79,7 @@ class Reply(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(Author, on_delete=models.CASCADE)
-    content = models.TextField()
+    content = HTMLField()
     date = models.DateTimeField(auto_now_add=True)
     replies = models.ManyToManyField(Reply, blank=True)
 

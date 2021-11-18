@@ -7,6 +7,8 @@ from django.utils.text import slugify
 from posts.models import Author
 from .forms import RegisterForm, LoginForm, ProfileForm
 from django.contrib.auth.decorators import login_required
+import os
+from django.core.files.images import ImageFile
 
 def signup(request):
     context = {}
@@ -100,7 +102,13 @@ def update_profile(request):
             try:
                 profile.profile_pic = request.FILES['profile_pic']
             except:
-                pass
+                if request.POST['profile_pic'] is None:
+                    # tux = os.path("static/media/user_avatars/happy_tux.jpg")
+                    f = ImageFile('static/media/user_avatars/happy_tux.jpg')
+                    
+                    profile.profile_pic = f
+                # pass
+                # PADARYTI KAD PASETINTU TUX JEIGU ISTRINI
                 # if form.profile_pic.field.widget:
                 #     profile.profile_pic = request.POST['profile_pic']
                 # else:

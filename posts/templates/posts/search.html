@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'posts/styles/homepage.css' %}">
-    <title>Posts</title>
+    <title>Searched Posts</title>
 </head>
 
 <body>
@@ -66,7 +66,7 @@
         <div class="row category-section p-0 m-3">
             <div class="row category-name-row ps-2 ms-0 mt-0 me-2 mb-0">
                 <div class="col-auto p-0">
-                    <p class="category-name text-decoration-none fw-bold fs-6 text-uppercase p-0 m-0">{{category.get_title}}</p>
+                    <p class="category-name text-decoration-none fw-bold fs-6 text-uppercase p-0 m-0">Search for: "{{query}}" // Results: {{posts|length}} posts </p>
                 </div>
             </div>
             {% if posts %} {% for post in posts %}
@@ -100,7 +100,7 @@
                 {% endif %}
             </div>
             {% endfor %} {% else %}
-            <p class="post-start fst-italic text-center">No posts found in this category</p>{% endif %}
+            <p class="post-start fst-italic text-center">No posts found matching search query</p>{% endif %}
         </div>
     </div>
 

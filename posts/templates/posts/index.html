@@ -1,92 +1,35 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'posts/styles/homepage.css' %}">
-    <title>Homepage</title>
-</head>
-
-<body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand text-uppercase fw-bold fs-3" href="{% url 'home' %}">forum</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav d-flex">
-                    {% if request.user.is_authenticated %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fw-bold" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{request.user}}</a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-                        </ul>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-btn px-3 py-1 me-2 fw-bold" href="{% url 'signin' %}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-btn px-3 py-1" href="{% url 'signup' %}">Register</a>
-                    </li>
-                    {% endif %}
-                </ul>
-                <!-- <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form> -->
+{% extends "../forum/templates/forum/base.html" %} {% block head %} {% load static %} {% load hitcount_tags %}
+<title>Homepage</title>
+{% endblock %} {% block content %}
+<div class="container-fluid all-categories p-0 m-0">
+    <div class="row category-section p-0 m-3">
+        <div class="row category-name-row ps-2 ms-0 mt-0 me-2 mb-0">
+            <div class="col-auto p-0">
+                <p class="category-name text-decoration-none fw-bold fs-6 text-uppercase p-0 m-0">Categories</p>
             </div>
         </div>
-    </nav>
-
-    <div class="container-fluid all-categories p-0 m-0">
-        <div class="row category-section p-0 m-3">
-            <div class="row category-name-row ps-2 ms-0 mt-0 me-2 mb-0">
-                <div class="col-auto p-0">
-                    <p class="category-name text-decoration-none fw-bold fs-6 text-uppercase p-0 m-0">Categories</p>
-                </div>
+        {% for category in categories %}
+        <div class="row category-info-row border border-dark ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
+            <div class="col-1 d-flex align-items-center category-icon-col py-1">
+                <img src="{% static 'media/forum-icon.svg' %}" alt="forum-icon" class="forum-icon">
             </div>
-            {% for category in categories %}
-            <div class="row category-info-row border border-dark ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
-                <div class="col-1 d-flex align-items-center category-icon-col py-1">
-                    <img src="{% static 'media/forum-icon.svg' %}" alt="forum-icon" class="forum-icon">
+            <div class="col-auto category-info-col p-0 ps-2">
+                <a class="category-title fw-bold text-decoration-none m-0 fs-5" href="{% url 'posts' category.slug %}">{{category.title}}</a>
+                <p class="category-desc">{{category.description}}</p>
+                <p class="category-posts fst-italic m-0">Posts: {{category.num_posts}}</p>
+                {% if category.last_post %}
+                <div class="latest-post">
+                    <small>Latest Post:
+                        <a href="{{category.last_post.get_url}}"
+                            class="last-post-link fw-bold">{{category.last_post.get_title}}</a> by
+                        <a href="{{category.last_post.user.fullname}}"
+                            class="last-post-user-link fw-bold">{{category.last_post.user.fullname}}</a>
+                    </small>
                 </div>
-                <div class="col-auto category-info-col p-0 ps-2">
-                    <a class="category-title fw-bold text-decoration-none m-0 fs-5" href="{% url 'posts' category.slug %}">{{category.title}}</a>
-                    <p class="category-desc">{{category.description}}</p>
-                    <p class="category-posts fst-italic m-0">Posts: {{category.num_posts}}</p>
-                    {% if category.last_post %}
-                    <div class="latest-post">
-                        <small>Latest Post: 
-                            <a href="{{category.last_post.get_url}}" class="last-post-link fw-bold">{{category.last_post.get_title}}</a> by
-                            <a href="{{category.last_post.user.fullname}}" class="last-post-user-link fw-bold">{{category.last_post.user.fullname}}</a>
-                        </small>
-                    </div>
-                    {% endif %}
-                </div>
+                {% endif %}
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-</body>
-
-</html>
+</div>
+{% endblock %}
