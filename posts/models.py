@@ -15,7 +15,7 @@ class Author(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     fullname = models.CharField(max_length=40, blank=False)
     slug = models.SlugField(max_length=400, unique=True, blank=True)
-    bio = HTMLField(blank=True)
+    bio = models.TextField(max_length=5000, blank=True)
     profile_pic = ResizedImageField(size=[100, 100], quality=100, upload_to='user_avatars', default='user_avatars/happy_tux.jpg', null=True)
 
     def __str__(self):
@@ -66,7 +66,7 @@ class Category(models.Model):
 
 class Reply(models.Model):
     user = models.ForeignKey(Author, on_delete=models.CASCADE)
-    content = HTMLField()
+    content = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -78,7 +78,7 @@ class Reply(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(Author, on_delete=models.CASCADE)
-    content = HTMLField()
+    content = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
     replies = models.ManyToManyField(Reply, blank=True)
 
@@ -91,7 +91,7 @@ class Post(models.Model):
     title = models.CharField(max_length=400)
     slug = models.SlugField(max_length=400, unique=True, blank=True)
     user = models.ForeignKey(Author, on_delete=models.CASCADE)
-    content = HTMLField()
+    content = models.TextField()
     categories = models.ManyToManyField(Category)
     date = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(default=False)
