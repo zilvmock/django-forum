@@ -16,8 +16,7 @@ class Author(models.Model):
     fullname = models.CharField(max_length=40, blank=False)
     slug = models.SlugField(max_length=400, unique=True, blank=True)
     bio = HTMLField(blank=True)
-    points = models.IntegerField(default=0)
-    profile_pic = ResizedImageField(size=[100, 100], quality=100, upload_to='user_avatars', default='user_avatars/happy_tux.jpg', null=True, blank=True)
+    profile_pic = ResizedImageField(size=[100, 100], quality=100, upload_to='user_avatars', default='user_avatars/happy_tux.jpg', null=True)
 
     def __str__(self):
         return self.fullname
@@ -58,7 +57,7 @@ class Category(models.Model):
 
     @property
     def num_posts(self):
-        return Post.objects.filter(categories=self).count()
+        return Post.objects.filter(categories=self, approved=True).count()
     
     @property
     def last_post(self):
@@ -102,7 +101,6 @@ class Post(models.Model):
     tags = TaggableManager()
     comments = models.ManyToManyField(Comment, blank=True)
     closed = models.BooleanField(default=False)
-    state = models.CharField(max_length=40, default='zero')
     
     def save(self, *args, **kwargs):
         if not self.slug:

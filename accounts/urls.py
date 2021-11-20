@@ -1,9 +1,8 @@
-from django.urls import path, include
+from django.urls import path
 from .views import signup, signin, logout, create_author, update_profile
 
 
 urlpatterns = [
-    # path('', include('forum.urls')),
     path("signup/", signup, name="signup"),
     path("signin/", signin, name="signin"),
     path("logout/", logout, name="logout"),

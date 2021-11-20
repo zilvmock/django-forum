@@ -3,8 +3,14 @@
     color: white;
 }
 
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
     background-color: whitesmoke;
+    margin-bottom: 5em;
 }
 
 .navbar {
@@ -31,8 +37,16 @@ body {
     background-color: #576574 !important;
 }
 
+.footer {
+    background-color: #c8d6e5;
+    position: absolute !important;
+    bottom: 0 !important;
+    width: 100% !important;
+}
 
-/* CONTENT */
+
+/* CONTENT 
+ posts app */
 
 .category-section {
     background-color: #c8d6e5;
@@ -43,10 +57,18 @@ body {
     background-color: #576574;
 }
 
+.category-info-row {
+    height: 7em;
+}
+
 .category-icon-col,
 .post-icon-col {
     width: 5em;
     background-color: #576574;
+}
+
+.last-post-user-link:hover {
+    color: white !important;
 }
 
 .user-info-col {
@@ -60,13 +82,42 @@ body {
     max-width: 50px;
 }
 
+.post-nf {
+    color: black !important;
+}
+
 .post-info-row,
 .category-info-row,
 .post-info-row,
 .comment-info-row,
 .replies-info-row,
-.new-post-section {
+.new-post-section,
+.update-post-section {
     background-color: #8395a7;
+}
+
+.comment-content {
+    position: relative;
+    z-index: 0 !important;
+}
+
+.post-comment-div {
+    position: relative;
+    z-index: -1 !important;
+}
+
+.post-comment-div {
+    position: relative;
+    z-index: 1 !important;
+}
+
+.reply {
+    position: relative;
+    z-index: 2 !important;
+}
+
+.info-tags {
+    color: black !important;
 }
 
 .create-post p,
@@ -92,12 +143,13 @@ body {
     color: white !important;
 }
 
-.post-comment-div textarea,
+
+/* .post-comment-div textarea,
 .post-comment-div label,
 .post-reply-div textarea,
 .post-reply-div label {
     color: black !important;
-}
+} */
 
 a {
     color: white !important;
@@ -105,20 +157,6 @@ a {
 
 a:hover {
     color: #5f27cd !important;
-}
-
-.comment-info-col {
-    z-index: 0 !important;
-}
-
-.comment-content {
-    position: absolute;
-    z-index: -1 !important;
-}
-
-.reply-div {
-    display: block;
-    z-index: 100 !important;
 }
 
 .post-extra-info,
@@ -139,9 +177,10 @@ a:hover {
     height: 50px;
 }
 
-.post-content {
+
+/* .post-content {
     height: 100%;
-}
+} */
 
 .hitpoints {
     font-size: smaller;
@@ -155,4 +194,73 @@ a:hover {
 .paginator b,
 .paginator a {
     color: black !important;
+}
+
+
+/* CONTENT
+ accounts app */
+
+.register-table,
+.login-table,
+.profile-table {
+    width: 30em;
+    min-height: 30em;
+    border-radius: 5px;
+    border: 1px solid black;
+    color: black !important;
+    background-color: #c8d6e5;
+}
+
+.login-table input,
+.login-table textarea,
+.login-table label,
+.register-table input,
+.register-table textarea,
+.register-table label,
+.profile-table textarea,
+.profile-table small,
+.profile-table h3 {
+    width: 100%;
+    color: black;
+}
+
+.profile-table textarea,
+#id_fullname {
+    width: 100%;
+}
+
+.profile-table label,
+.profile-table input {
+    color: black;
+}
+
+#profile_pic-clear_id {
+    text-align: left !important;
+}
+
+.profile-table a {
+    color: #5f27cd !important;
+}
+
+.register-table p,
+.register-table li {
+    color: grey;
+}
+
+.login-table .btn,
+.register-table .btn,
+.profile-table .btn {
+    color: white !important;
+}
+
+.login-table {
+    min-height: 17em;
+}
+
+.profile-table {
+    min-width: 55em;
+}
+
+.error-msg {
+    color: red;
 }

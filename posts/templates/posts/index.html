@@ -17,13 +17,12 @@
                 <a class="category-title fw-bold text-decoration-none m-0 fs-5" href="{% url 'posts' category.slug %}">{{category.title}}</a>
                 <p class="category-desc">{{category.description}}</p>
                 <p class="category-posts fst-italic m-0">Posts: {{category.num_posts}}</p>
-                {% if category.last_post %}
+                {% if category.last_post and category.last_post.approved %}
                 <div class="latest-post">
                     <small>Latest Post:
                         <a href="{{category.last_post.get_url}}"
                             class="last-post-link fw-bold">{{category.last_post.get_title}}</a> by
-                        <a href="{{category.last_post.user.fullname}}"
-                            class="last-post-user-link fw-bold">{{category.last_post.user.fullname}}</a>
+                        <a class="last-post-user-link fw-bold text-decoration-none">{{category.last_post.user.fullname}}</a>
                     </small>
                 </div>
                 {% endif %}

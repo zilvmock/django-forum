@@ -1,95 +1,16 @@
-{% load static %} {% load hitcount_tags %}
-
-<link rel="stylesheet" type="text/css" href="{% static 'bs/css/bootstrap.css' %}" />
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'posts/styles/homepage.css' %}">
-    <title>Update Post</title>
-</head>
-
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand text-uppercase fw-bold fs-3" href="{% url 'home' %}">forum</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled">Disabled</a>
-                    </li> -->
-                </ul>
-                <ul class="navbar-nav d-flex">
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-btn px-3 py-1 me-2 fw-bold" href="#">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-btn px-3 py-1" href="#">Register</a>
-                    </li>
-                </ul>
-                <!-- <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form> -->
+{% extends "../forum/templates/forum/base.html" %} {% block head %} {% load static %} {% load hitcount_tags %}
+<title>Update Post</title>
+{% endblock %} {% block content %}
+<div class="container-fluid update-post p-0 m-0">
+    <div class="row update-post-section p-0 m-3 pb-2">
+        <form class="update-post-form" method="POST">
+            {% csrf_token %}
+            <h1 class="text-uppercase">Update the fields</h1>
+            {{form}}
+            <div class="btn-div d-grid gap-2 col-1 pt-4">
+                <input class="btn" type="submit" value="Update">
             </div>
-        </div>
-    </nav>
-
-    <div class="container-fluid update-post p-0 m-0">
-        <div class="row update-post-section p-0 m-3 ">
-            <form class="update-post-form" method="POST">
-                {% csrf_token %}
-                <h1 class="text-uppercase">Update the fields</h1>
-                {{form.title}} {{form.content}} {{form.tags}}
-                <!-- <div class="col new-post-title-col">
-                    <p class="text-uppercase fw-bold m-0 pt-2">Title:</p>
-                    {{ form.title }}
-                </div>
-                <div class="col new-post-content-col">
-                    <p class="text-uppercase fw-bold m-0 pt-2">Content:</p>
-                    {{ form.content|safe }}
-                </div>
-                <div class="col new-post-categories-col">
-                    <p class="text-uppercase fw-bold m-0 pt-2">Select Category:</p>
-                    {{ form.categories }}
-                </div>
-                <div class="col new-post-tags-col">
-                    <p class="text-uppercase fw-bold m-0 pt-2">Enter a Tag:</p>
-                    {{ form.tags }}
-                </div> -->
-                <div class="btn-div d-grid gap-2 col-1 pt-4">
-                    <input class="btn text-uppercase fw-bold" type="submit" value="Update">
-                </div>
-            </form>
-        </div>
+        </form>
     </div>
-</body>
-
-</html>
+</div>
+{% endblock %}

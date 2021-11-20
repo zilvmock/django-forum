@@ -17,9 +17,3 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Author
         fields = ['fullname', 'bio', 'profile_pic']
-    
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.fields['fullname'].required = True
-        # self.fields['profile_pic'].required = True
-

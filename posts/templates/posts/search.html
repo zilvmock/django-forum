@@ -1,112 +1,45 @@
-{% load static %} {% load hitcount_tags %}
-
-<link rel="stylesheet" type="text/css" href="{% static 'bs/css/bootstrap.css' %}" />
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'posts/styles/homepage.css' %}">
-    <title>Searched Posts</title>
-</head>
-
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand text-uppercase fw-bold fs-3" href="{% url 'home' %}">forum</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled">Disabled</a>
-                    </li> -->
-                </ul>
-                <ul class="navbar-nav d-flex">
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-btn px-3 py-1 me-2 fw-bold" href="#">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-btn px-3 py-1" href="#">Register</a>
-                    </li>
-                </ul>
-                <!-- <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form> -->
+{% extends "../forum/templates/forum/base.html" %} {% block head %} {% load static %} {% load hitcount_tags %}
+<title>Search Results</title>
+{% endblock %} {% block content %}
+<div class="container-fluid all-categories p-0 m-0">
+    <div class="row category-section p-0 m-3">
+        <div class="row category-name-row ps-2 ms-0 mt-0 me-2 mb-0">
+            <div class="col-auto p-0">
+                <p class="category-name text-decoration-none fw-bold fs-6 text-uppercase p-0 m-0">Search for: "{{query}}" // Results: {{posts|length}} posts </p>
             </div>
         </div>
-    </nav>
-
-    <div class="container-fluid all-categories p-0 m-0">
-        <div class="row category-section p-0 m-3">
-            <div class="row category-name-row ps-2 ms-0 mt-0 me-2 mb-0">
-                <div class="col-auto p-0">
-                    <p class="category-name text-decoration-none fw-bold fs-6 text-uppercase p-0 m-0">Search for: "{{query}}" // Results: {{posts|length}} posts </p>
-                </div>
+        {% if posts %} {% for post in posts %}
+        <div class="row post-info-row border border-dark ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
+            <div class="col-1 d-flex align-items-center post-icon-col py-1">
+                <img src="{% static 'media/topic-icon.svg' %}" alt="topic-icon" class="topic-icon">
             </div>
-            {% if posts %} {% for post in posts %}
-            <div class="row post-info-row border border-dark ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
-                <div class="col-1 d-flex align-items-center post-icon-col py-1">
-                    <img src="{% static 'media/topic-icon.svg' %}" alt="topic-icon" class="topic-icon">
-                </div>
-                <div class="col-8 post-info p-0 ps-2">
-                    <a class="post-title fw-bold text-decoration-none m-0 fs-5" href="{% url 'detail' post.slug %}">{{post.title}}</a>
-                    <p class="post-start fst-italic">{{post.get_snippet|striptags}}</p>
-                    <small>by
-                        <a href="{{post.user.fullname}}" class="last-post-user-link fw-bold">{{category.last_post.user.fullname}}</a>
-                        <p class="post-extra-info fst-italic text-decoration-none m-0">At {{post.date}} <br> Has {% get_hit_count for post %} views | {{post.num_comments}} comments </p>
-                    </small>
-                </div>
-                {% if post.last_reply %}
-                <div class="col post-side-info border-start border-dark ps-1 p-1">
-                    <div class="row">
-                        <div class="col-12">
-                            <p class="text-center m-0 p-0 fw-bold">Latest Reply</p>
-                        </div>
-                        <div class="col-2 m-1">
-                            <img src="{{post.last_reply.user.profile_pic.url}}" alt="user-avatar" class="lr-user-avatar">
-                        </div>
-                        <div class="col-xxl-auto col-xl m-1">
-                            <small><a href="" class="username">{{post.last_reply.user.fullname}}</a><br></small>
-                            <small class="reply-extra-info fst-italic text-decoration-none m-0">At {{post.last_reply.date}}</small>
-                        </div>
+            <div class="col-8 post-info p-0 ps-2">
+                <a class="post-title fw-bold text-decoration-none m-0 fs-5" href="{% url 'detail' post.slug %}">{{post.title}}</a>
+                <p class="post-start fst-italic">{{post.get_snippet|striptags}}</p>
+                <small>by
+                    <a class="last-post-user-link fw-bold text-decoration-none">{{post.user.fullname}}</a>
+                    <p class="post-extra-info fst-italic text-decoration-none m-0">At {{post.date}} <br> Has {% get_hit_count for post %} views | {{post.num_comments}} comments </p>
+                </small>
+            </div>
+            {% if post.last_reply %}
+            <div class="col post-side-info border-start border-dark ps-1 p-1">
+                <div class="row">
+                    <div class="col-12">
+                        <p class="text-center m-0 p-0 fw-bold">Latest Reply</p>
+                    </div>
+                    <div class="col-2 m-1">
+                        <img src="{{post.last_reply.user.profile_pic.url}}" alt="user-avatar" class="lr-user-avatar">
+                    </div>
+                    <div class="col-xxl-auto col-xl m-1">
+                        <small><a href="" class="username text-decoration-none">{{post.last_reply.user.fullname}}</a><br></small>
+                        <small class="reply-extra-info fst-italic text-decoration-none m-0">At {{post.last_reply.date}}</small>
                     </div>
                 </div>
-                {% endif %}
             </div>
-            {% endfor %} {% else %}
-            <p class="post-start fst-italic text-center">No posts found matching search query</p>{% endif %}
+            {% endif %}
         </div>
+        {% endfor %} {% else %}
+        <p class="post-nf fst-italic text-center">Found nothing...</p>{% endif %}
     </div>
-
-    <div class="paginator m-3">
-        <b class="ms-2 fst-italic">Pages:</b> {% for num_page in posts.paginator.page_range %} <a class="border border-dark mx-1 px-1" href="?page={{num_page}}">{{num_page}}</a> {% endfor %}
-    </div>
-</body>
-
-</html>
+</div>
+{% endblock %}

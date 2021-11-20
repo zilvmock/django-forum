@@ -1,202 +1,106 @@
-{% load static %} {% load hitcount_tags %}
-
-<link rel="stylesheet" type="text/css" href="{% static 'bs/css/bootstrap.css' %}" />
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'posts/styles/homepage.css' %}">
-    <script src="{% static 'posts/js/main.js' %}"></script>
-    <title>Post</title>
-
-</head>
-
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand text-uppercase fw-bold fs-3" href="{% url 'home' %}">forum</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled">Disabled</a>
-                    </li> -->
-                </ul>
-                <ul class="navbar-nav d-flex">
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-btn px-3 py-1 me-2 fw-bold" href="#">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-btn px-3 py-1" href="#">Register</a>
-                    </li>
-                </ul>
-                <!-- <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form> -->
+{% extends "../forum/templates/forum/base.html" %} {% block head %} {% load static %} {% load hitcount_tags %}
+<script src="{% static 'posts/js/main.js' %}"></script>
+<title>Detail</title>
+{% endblock %} {% block content %}
+<!-- user post -->
+<div class="container-fluid user-post p-0 m-0">
+    <div class="row post-section p-0 m-3">
+        <div class="row topic-title-row ps-2 ms-0 mt-0 me-2 mb-0">
+            <div class="col p-0">
+                <p class="topic-name text-decoration-none fw-bold fs-4 text-uppercase p-0 m-0">
+                    {{ post.get_title }}</p>
             </div>
         </div>
-    </nav>
-
-    <!-- user post -->
-    <div class="container-fluid user-post p-0 m-0">
-        <div class="row post-section p-0 m-3">
-            <div class="row topic-title-row ps-2 ms-0 mt-0 me-2 mb-0">
-                <div class="col p-0">
-                    <p class="topic-name text-decoration-none fw-bold fs-4 text-uppercase p-0 m-0">
-                        {{ post.get_title }}</p>
-                </div>
+        <div class="row post-info-row ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
+            <div class="col-1 user-info-col text-center py-1">
+                {% if post.user.profile_pic %}
+                <img src="{{post.user.profile_pic.url}}" alt="user-avatar" class="user-avatar"><br> {% else %}
+                <img src="{% static 'media/user_avatars/happy_tux.jpg' %}" alt="user-avatar" class="user-avatar"><br> {% endif %}
+                <a class="username text-decoration-none">{{ post.user.fullname }}</a><br>
+                <small class="user-posts">Posts: {{post.user.num_posts}}</small>
             </div>
-            <div class="row post-info-row ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
-                <div class="col-1 user-info-col text-center py-1">
-                    {% if post.user.profile_pic %}
-                    <img src="{{post.user.profile_pic.url}}" alt="user-avatar" class="user-avatar"><br> {% else %}
-                    <img src="{% static 'media/user_avatars/happy_tux.jpg' %}" alt="user-avatar" class="user-avatar"><br> {% endif %}
-                    <a href="" class="username text-decoration-none">{{ post.user.fullname }}</a><br>
-                    <small class="user-points">Points: {{post.user.points}}</small><br>
-                    <small class="user-posts">Posts: {{post.user.num_posts}}</small>
+            <div class="col post-info-col p-2">
+                <div class="row post-content h-75">
+                    <p class="ms-1 mt-1">{{ post.content }}</p>
                 </div>
-                <div class="col post-info-col p-2 h-75">
-                    <div class="row post-content">
-                        {{ post.content|safe }}
-                    </div>
-                    <div class="row">
-                        <div class="col d-flex justify-content-end">
-                            {% if post.user.id == request.user.id %}
-                            <button class="btn btn-dark" name="del" onclick="location.href='{% url 'delete-post' post.slug %}'">Delete</button>
-                            <button class="btn btn-dark" name="upd" onclick="location.href='{% url 'edit-post' post.slug %}'">Update</button>{% endif %}
-                        </div>
+                <div class="row">
+                    <div class="col d-flex justify-content-end align-bottom">
+                        {% if post.user.id == request.user.id and request.user.is_authenticated and not post.closed %}
+                        <button class="btn me-2" name="del" onclick="location.href='{% url 'delete-post' post.slug %}'">Delete</button>
+                        <button class="btn" name="upd" onclick="location.href='{% url 'edit-post' post.slug %}'">Update</button>{% endif %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- comments -->
-    <h3 class="name text-uppercase ps-3 bg-black ">Comments</h3>
-    {% for comment in post.comments.all %}
-    <div class="row comment-section p-0 m-3 ">
-        <div class="row comment-info-row ms-0 mt-1 me-2 mb-1 ps-0 pe-0 ">
-            <div class="col-1 user-info-col text-center py-1 ">
-                <img src="{{post.user.profile_pic.url}} " alt="user-avatar " class="user-avatar ">
-                <a href=" " class="username text-decoration-none ">{{ post.user.fullname }}</a>
-                <small class="user-points ">Points: {{comment.user.points}}</small><br>
-                <small class="user-posts ">Posts: {{comment.user.num_posts}}</small>
+<!-- comments -->
+<h5 class="name text-uppercase bg-black text-center mb-0">Comments</h5>
+{% if not request.user.is_authenticated %}
+<h6 class="name bg-danger text-center ">Please Login in Order To Comment and Reply</h6>
+{% endif %} {% for comment in post.comments.all %}
+<div class="row comment-section p-0 m-3">
+    <div class="row comment-info-row ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
+        <div class="col-1 user-info-col text-center py-1">
+            <img src="{{comment.user.profile_pic.url}}" alt="user-avatar" class="user-avatar"><br>
+            <a class="username text-decoration-none">{{ comment.user.fullname }}</a><br>
+            <small class="user-posts">Posts: {{comment.user.num_posts}}</small>
+        </div>
+        <div class="col comment-info-col p-2">
+            <div class="row comment-content h-75">
+                <p class="m-1 pe-3">{{ comment.content }}</p>
             </div>
-            <div class="col comment-info-col p-2 ">
-                <div class="row comment-content h-75 ">
-                    {{ comment.content|safe }}
-                </div>
-                <div class="row reply-section text-end align-text-bottom ">
-                    <div class="col reply ">
-                        <button class="btn " onclick="showReplies( '{{comment.id}}') ">Reply3</button>
-                        <div class="reply-div shadow p-3 mb-5 bg-white rounded mt-3 " id={{comment.id}} style="visibility:hidden; ">
-                            <form action=". " method="POST ">
-                                {% csrf_token %}
-                                <div class="form-floating post-reply-div ps-3 ">
-                                    <textarea class="form-control w-100 " placeholder="Leave a comment here " id="floatingTextarea " name="reply-content "></textarea>
-                                    <label class="ps-4 " for="floatingTextarea ">Reply Here</label>
-                                </div>
-                                <input name="comment-id " value="{{comment.id}} " type="hidden ">
-                                <button type="submit " class="btn text-uppercase ms-3 mt-3 " name="post-a-reply ">Comment</button>
-                            </form>
-                        </div>
-                    </div>
-
-
-
-
-
-
-
-
-                    <!-- post a reply
-                    <p>
-                        <button class="btn " onclick="showReplies( '{{comment.id}}') " type="button " data-bs-toggle="collapse " data-bs-target="#collapseWidthExample " aria-expanded="false " aria-controls="collapseWidthExample ">
-                        Reply
-                        </button>
-                        <button class="btn " onclick="showReplies( '{{comment.id}}') " type="submit ">Reply2</button>
-                    </p>
-                    <div id={{comment.id}} style="min-height: 120px; ">
-                        <div class="collapse collapse-horizontal " id="collapseWidthExample ">
-                            <div class="card card-body shadow p-3 mb-5 bg-body rounded " style="width: 100%; border: 1px solid black; ">
-                                <form action=". " method="POST ">
-                                    {% csrf_token %}
-                                    <div class="form-floating post-reply-div ps-3 ">
-                                        <textarea class="form-control w-100 " placeholder="Leave a comment here " id="floatingTextarea " name="reply-content "></textarea>
-                                        <label class="ps-4 " for="floatingTextarea ">Reply Here</label>
-                                    </div>
-                                    <button type="submit " class="btn text-uppercase ms-3 mt-3 " name="post-a-comment ">Comment</button>
-                                </form>
+            <div class="row reply-section text-end align-text-bottom">
+                <div class="col reply">
+                    {% if request.user.is_authenticated and is_author and not post.closed %}
+                    <button class="btn" onclick="showReplies('{{comment.id}}')">Reply</button> {% endif %}
+                    <div class="reply-div shadow p-3 mb-5 bg-white rounded mt-3" id={{comment.id}} style="visibility:hidden;">
+                        <h5 class="info-tags ps-3 text-start">Reply Here:</h5>
+                        <form action="." method="POST">
+                            {% csrf_token %}
+                            <div class="form-floating post-reply-div ps-3">
+                                <textarea class="form-control w-100" placeholder="Leave a comment here" id="floatingTextarea" name="reply-content"></textarea>
                             </div>
-                        </div>
-                    </div> -->
+                            <input name="comment-id" value="{{comment.id}}" type="hidden">
+                            <button type="submit" class="btn ms-3 mt-3" name="post-a-reply">Comment</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- replies -->
-    {% for reply in comment.replies.all %}
-    <div class="row replies-section p-0 m-3 ps-5 ">
-        <div class="row replies-info-row ms-0 mt-1 me-2 mb-1 ps-0 pe-0 ">
-            <div class="col-1 user-info-col text-center py-1 ">
-                <img src="{{post.user.profile_pic.url}} " alt="user-avatar " class="user-avatar ">
-                <a href=" " class="username text-decoration-none ">{{ post.user.fullname }}</a>
-                <small class="user-points ">Points: {{reply.user.points}}</small><br>
-                <small class="user-posts ">Posts: {{reply.user.num_posts}}</small>
+</div>
+<!-- replies -->
+{% for reply in comment.replies.all %}
+<div class="row replies-section p-0 m-3 ps-5 ">
+    <div class="row replies-info-row ms-0 mt-1 me-2 mb-1 ps-0 pe-0">
+        <div class="col-1 user-info-col text-center py-1">
+            <img src="{{reply.user.profile_pic.url}}" alt="user-avatar" class="user-avatar"><br>
+            <a class="username text-decoration-none">{{ reply.user.fullname }}</a><br>
+            <small class="user-posts">Posts: {{reply.user.num_posts}}</small>
+        </div>
+        <div class="col post-info-col p-2 h-75">
+            <div class="row post-content">
+                <p class="m-1 pe-3">{{ reply.content }}</p>
             </div>
-            <div class="col post-info-col p-2 h-75 ">
-                <div class="row post-content ">
-                    {{ reply.content|safe }}
-                </div>
-            </div>
-
-            <!-- <div class="col reply-info-col p-2 ">
-                <p class="reply-content ">{{ reply.content|safe }}</p>
-            </div> -->
-
         </div>
     </div>
-    {% endfor %} {% endfor %}
+</div>
+{% endfor %} {% endfor %}
 
-    <!-- post a comment -->
-    <form action=". " method="POST ">
-        {% csrf_token %}
-        <div class="form-floating post-comment-div ps-3 ">
-            <textarea class="form-control w-100 " placeholder="Leave a comment here " id="floatingTextarea " name="comment-content "></textarea>
-            <label class="ps-4 " for="floatingTextarea ">Comment Here</label>
-        </div>
-        <button type="submit " class="btn text-uppercase ms-3 mt-3 " name="post-a-comment ">Comment</button>
-    </form>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js " integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p " crossorigin="anonymous "></script>
-</body>
-
-</html>
+<!-- post a comment -->
+{% if request.user.is_authenticated and is_author and not post.closed %}
+<h5 class="info-tags ps-3">Comment Here:</h5>
+<div class="row w-100">
+    <div class="col">
+        <form action="." method="POST">
+            {% csrf_token %}
+            <div class="form-floating post-comment-div ps-3">
+                <textarea class="form-control w-100 h-auto" placeholder="Leave a comment here" id="floatingTextarea" name="comment-content"></textarea>
+            </div>
+            <button type="submit" class="btn ms-3 mt-3" name="post-a-comment">Comment</button>
+        </form>
+    </div>
+</div>
+{% endif %} {% endblock %}
