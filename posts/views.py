@@ -87,12 +87,8 @@ def create_post(request):
     author = Author
     try:
         author = Author.objects.get(user=request.user)
-        if author is not None:
-            is_author = True
     except author.DoesNotExist:
-        is_author = False
-    if is_author == False:
-        return redirect("home")
+        return redirect("profile")
     
     context = {}
     form = PostForm(request.POST)
@@ -113,7 +109,6 @@ def create_post(request):
 @login_required
 def edit_post(request, slug):
     context = {}
-    user = request.user
     post = get_object_or_404(Post, slug=slug)
 
     if request.method == "POST":

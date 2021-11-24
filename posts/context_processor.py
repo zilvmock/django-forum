@@ -6,7 +6,7 @@ def searchFunction(request):
     context = {}
     if "search" in request.GET:
         query = request.GET.get("q")
-        by_title = posts.filter(title__icontains=query, approved=True, closed=False) #  content__icontains=query, tags__icontains=query
+        by_title = posts.filter(title__icontains=query, approved=True, closed=False)
         by_content = posts.filter(content__icontains=query, approved=True, closed=False)
         by_tags = posts.filter(tags__name__in=[query], approved=True, closed=False)
         all_query = by_title | by_content | by_tags

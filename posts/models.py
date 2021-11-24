@@ -14,7 +14,6 @@ User = get_user_model()
 class Author(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     fullname = models.CharField(max_length=40, blank=False)
-    slug = models.SlugField(max_length=400, unique=True, blank=True)
     bio = models.TextField(max_length=5000, blank=True)
     profile_pic = ResizedImageField(size=[100, 100], quality=100, upload_to='user_avatars', default='user_avatars/happy_tux.jpg', null=True)
 
@@ -25,11 +24,6 @@ class Author(models.Model):
     def num_posts(self):
         return Post.objects.filter(user=self).count()
     
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.fullname)
-        super(Author, self).save(*args, **kwargs)
 
 class Category(models.Model):
     title = models.CharField(max_length=50)

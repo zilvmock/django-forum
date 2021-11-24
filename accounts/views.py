@@ -48,7 +48,7 @@ def create_author(request):
             profile = form.save(commit=False)
             profile.user = user
             profile.save()
-            return redirect("profile")
+            return redirect("home")
 
     try:
         author = Author.objects.get(user=request.user)
